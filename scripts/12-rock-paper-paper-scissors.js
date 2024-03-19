@@ -38,15 +38,25 @@ let score = JSON.parse(localStorage.getItem('score')) ||
     })
 
     //event listener for reset button
+    function reset(){
+        score.wins = 0;
+        score.loses = 0;
+        score.ties = 0;
+        localStorage.removeItem('score');
+        updateScoreElement();
+      }
+      document.querySelector('.js-reset-button').
+      addEventListener('click',()=>{
+        reset();
+      });
 
-    document.querySelector('.js-reset-button')
-    .addEventListener('click', ()=>{
-      score.wins = 0;
-      score.loses = 0;
-      score.ties = 0;
-      localStorage.removeItem('score');
-      updateScoreElement();
-    })
+    function clearPgh(){
+      document.querySelector('.resetpopup').innerHTML = '';
+    }
+
+
+
+
     document.body.addEventListener('keydown', (event)=>{
       const key = event.key.toLowerCase()
       if(key === 'r'){
@@ -55,13 +65,23 @@ let score = JSON.parse(localStorage.getItem('score')) ||
         playGame('paper');
       }else if(key === 's'){
         playGame('scissors');
-      }else if(key === 'Backspace'){
+      }else if(key === 'backspace'){
         const resetPopup = document.querySelector('.resetpopup');
-        resetPopup.innerHTML = `Are you sure you want to reset the score <button>Yes</button><button>No</button>`;
+        resetPopup.innerHTML = `Are you sure you want to reset the score <button class="js-yes-button">Yes</button><button class="js-no-button">No</button>`;
         document.body.appendChild(resetPopup);
+        
+        const yesButton = resetPopup.querySelector('.js-yes-button')
+        .addEventListener('click',()=>{
+          reset();
+          clearPgh();
+        }
+        )
+        const noButton = resetPopup.querySelector('.js-no-button')
+        .addEventListener('click',()=>{
+          clearPgh();
+        });
       }
     });
-
 
     //autoplay block
 
